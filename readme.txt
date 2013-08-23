@@ -1,4 +1,4 @@
-=== Giveaways and Promotions by PromoSimple ===
+=== Giveaways and Contests by PromoSimple ===
 Contributors: promosimple,sammybeats
 Donate link: http://wiirl.com/plugins/giveaways-contests-by-promosimple/
 Tags: promotions, giveaways
