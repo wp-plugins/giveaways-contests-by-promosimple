@@ -1,0 +1,23 @@
+.promosimple-thickbox-box{
+    margin: 25px 0;
+    padding: 15px;
+    background: #39b3cb;
+    color: white;
+}
+.promosimple-thickbox-box a{
+    color: #ffffff !important;
+}
+.promosimple-thickbox-button{
+    float: right;
+}
+.promosimple-instructions{
+    display: none;
+    margin-bottom: 15px;
+    text-align: center;
+}
+.promosimple-instructions img{
+    max-height: 200px;
+}
+.promosimple-save{
+    margin-left: 15px !important;
+}
