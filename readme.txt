@@ -1,4 +1,4 @@
-=== Plugin Name ===
+=== Giveaways and Promotions by PromoSimple ===
 Contributors: promosimple,sammybeats
 Donate link: http://wiirl.com/plugins/giveaways-contests-by-promosimple/
 Tags: promotions, giveaways
