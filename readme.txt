@@ -12,7 +12,7 @@ Include your PromoSimple entry forms within the content of any Page or Post by e
 
 == Description ==
 
-A simple plugin that allows you to quickly add your PromoSimple promotions to your WordPress site.
+A simple plugin that allows you to quickly add your <a href="http://promosimple.com">PromoSimple</a> promotions to your WordPress site.
 
 Create and customize all of your giveaways and sweepstakes within your PromoSimple account, including setting entry options such as 'Liking' a Facebook page or 'Following' you on Instagram, Pinterest or Twitter. When your giveaway is ready to go live, just add the campaign's ID to the content of any page or post on your WordPress website using the PS button in the content editor. A shortcode will appear within the content editor and, once the page or post is published, your entry form will display within your content.
 
@@ -20,17 +20,17 @@ Create and customize all of your giveaways and sweepstakes within your PromoSimp
 
 1. Upload the folder to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. You should now have an additional "PS" button on the word editor for adding your promos
+1. You should now have an additional "PS" button on the word editor for adding your contests
 
 == Frequently Asked Questions ==
 
-= Does this plugin allow me to create promotions and giveaways? =
+= Does this plugin allow me to create contests and giveaways? =
 
 No, this is designed to work with your <a href="http://promosimple.com">PromoSimple</a> account
 
 == Screenshots ==
 
-1. Shows the PS "PromoSimple" shortcode button.
+1. The PS "PromoSimple" shortcode button.
 
 == Changelog ==
 
