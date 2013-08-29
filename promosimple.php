@@ -2,11 +2,11 @@
 
 /*
 Plugin Name: PromoSimple
-Plugin URI: http://wiirl.com/plugins/promo-simple
+Plugin URI: http://blog.promosimple.com/features-tools/wordpress-plugin-for-giveaways/
 Description: A simple plugin that allows the insertion of PromoSimple embed code via PromoSimple promo IDs used in a shortcode.
 Version: 1.0
 Author: Sam Brodie
-Author URI: http://wiirl.com
+Author URI: http://promosimple.com
 License: GPL2
 
 Copyright 2013  Sam Brodie  (email : sambrodie01@gmail.com)

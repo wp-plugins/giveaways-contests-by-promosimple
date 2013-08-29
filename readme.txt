@@ -1,6 +1,6 @@
 === Giveaways and Contests by PromoSimple ===
 Contributors: promosimple,sammybeats
-Donate link: http://wiirl.com/plugins/giveaways-contests-by-promosimple/
+Donate link: http://blog.promosimple.com/features-tools/wordpress-plugin-for-giveaways/
 Tags: promotions, giveaways
 Requires at least: 3.0.1
 Tested up to: 3.6
