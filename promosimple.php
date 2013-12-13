@@ -54,6 +54,7 @@ if ( ! class_exists( 'Promosimple' ) ) {
          * @param $atts
          * @return string
          * @author: Sam Brodie
+         * @modified by Blas Asenjo
          * @since: 1.0
          */
         public function shortcode( $atts ) {
@@ -78,7 +79,20 @@ if ( ! class_exists( 'Promosimple' ) ) {
                     </noscript>
                 </div>
 
-                <?php $output = ob_get_clean();
+                <?php
+                //Get account key from the campaign id
+                $xml = @file_get_contents('http://www.promosimple.com/public/account-key/campaign_id/' . $id);
+                //If an XML was obtained...
+                if ($xml) {
+                    //Get the account key, and if there is one, show the PromoBar
+                    $sxe = new SimpleXMLElement($xml);
+                    if ($sxe->accountKey): ?>
+                        <div id="promolayer-<?php echo $sxe->accountKey; ?>" class="promolayer"></div>
+                        <script type="text/javascript" src="https://promosimple.com/api/1.0/layer"></script>
+                    <?php endif; ?>
+                <?php }
+                
+                 $output = ob_get_clean();
 
             } else {
 
