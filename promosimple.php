@@ -3,9 +3,10 @@
 /*
 Plugin Name: PromoSimple
 Plugin URI: http://blog.promosimple.com/features-tools/wordpress-plugin-for-giveaways/
-Description: A simple plugin that allows the insertion of PromoSimple embed code via PromoSimple promo IDs used in a shortcode.
-Version: 1.0
-Author: Sam Brodie
+Description: A simple plugin that allows the insertion of PromoSimple embed code via PromoSimple promo IDs used in a shortcode. Version 1.2 also adds
+an option in the settings menu that allows the insertion of a PromoBar.
+Version: 1.2
+Author: Sam Brodie / Blas Asenjo
 Author URI: http://promosimple.com
 License: GPL2
 
@@ -27,9 +28,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 if ( ! class_exists( 'Promosimple' ) ) {
-
     class Promosimple {
-
+        //Domain to use
+        protected $promoSimpleDomain = 'https://promosimple.com';
+        //Options and data
+        protected $option_name = 'promosimple';
+        protected $data = array(
+            'promo_bar_id' => '',
+        );
+    
         public static $help_url = 'http://blog.promosimple.com/new-features/wordpress-plug-in-for-giveaways';
         public function image_url(){
             return plugins_url( '/images/WordPressID-on-Publish.png', __FILE__ );
@@ -45,9 +52,109 @@ if ( ! class_exists( 'Promosimple' ) ) {
             add_action( 'init', array( $this, 'tinymce_buttons' ) );
             add_action( 'wp_ajax_promosimple_tinymce_thickbox', array( $this, 'promosimple_tinymce_thickbox' ) );
             add_action( 'admin_enqueue_scripts', array( $this, 'admin_style' ) );
-
+            add_action('admin_init', array($this, 'admin_init'));
+            add_action('admin_menu', array($this, 'add_page'));
+            //Attach an activation hook and create options with default values
+            register_activation_hook(__FILE__, array($this, 'activate'));
+        }
+        
+        /*
+         * Whitelist our options using the Settings API
+         */
+        public function admin_init() {
+            register_setting('promosimple_options', $this->option_name, array($this, 'validate'));
         }
 
+        /*
+         * Validate inputs
+         * 
+         * @param array $input The options to validate
+         * 
+         * @return array with validation results for each option
+         */
+        public function validate($input) {
+            $valid = array();
+            
+            /*** Validate PromoBar ID ***/
+            $valid['promo_bar_id'] = sanitize_text_field($input['promo_bar_id']);
+            //If something was inputted, validate
+            if (strlen($valid['promo_bar_id']) > 0) {
+                //Validate against public section
+                $xml = @file_get_contents($this->promoSimpleDomain . '/public/validate-key/key/' . $valid['promo_bar_id']);
+                
+                //If an XML was obtained...
+                if ($xml) {
+                    //Get the validation result from the xml
+                    $sxe = new SimpleXMLElement($xml);
+                    $validPromoBarId = $sxe->validKey;
+                }
+                
+                //if not valid, show the error and set to default value
+                if (@$validPromoBarId != true) {
+                    add_settings_error(
+                            'promo_bar_id',
+                            'promo_bar_id_texterror',
+                            'Please enter a valid ID, or leave the box empty to remove the PromoBar from your Wordpress site.',
+                            'error' 
+                    );
+
+                    // Set it to the default value
+                    $valid['promo_bar_id'] = $this->data['promo_bar_id'];
+                }
+            }
+            /*** End PromoBar ID validation ***/
+
+            return $valid;
+        }
+
+        /*
+         * Activate event for the activation hook.
+         */
+        public function activate() {
+            update_option($this->option_name, $this->data);
+        }
+
+        /*
+         * Removes the options when the plugin is deactivated
+         */
+        public function deactivate() {
+            delete_option($this->option_name);
+        }
+
+        /*
+         * Add page action. Adds the options page to the settings menu.
+         */
+        public function add_page() {
+            add_options_page('PromoSimple', 'PromoSimple', 'manage_options', 'promosimple_options', array($this, 'options_do_page'));
+        }
+
+        /*
+         * Print the options page
+         */
+        public function options_do_page() {
+            $options = get_option($this->option_name);
+            ?>
+            <div class="wrap">
+                <div id="icon-options-general" class="icon32">
+                    <br/>
+                </div>
+                <h2>PromoSimple Giveaways</h2>
+                <form method="post" action="options.php">
+                    <?php settings_fields('promosimple_options'); ?>
+                    <div class="settings-box">
+                        <div class="settings-title">General Settings:</div>
+                        <div class="settings-options">
+                            <span>PromoBar ID:</span>
+                            <input class="long-input" type="text" name="<?php echo $this->option_name?>[promo_bar_id]" value="<?php echo $options['promo_bar_id']; ?>" />
+                        </div>
+                    </div>
+                    <p class="submit">
+                        <input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
+                    </p>
+                </form>
+            </div>
+        <?php }
+        
         /**
          * Displays the PromoSimple form from the shortcode
          *
@@ -58,7 +165,14 @@ if ( ! class_exists( 'Promosimple' ) ) {
          * @since: 1.0
          */
         public function shortcode( $atts ) {
-
+            //Show PromoBar, if available
+            $promosimple= get_option('promosimple'); 
+            $promoBarId = $promosimple['promo_bar_id'];
+            if (!empty($promoBarId)): ?> 
+                <div id="promolayer-<?php echo $promoBarId ?>" class="promolayer"></div>
+                <script type="text/javascript" src="<?php echo $this->promoSimpleDomain ?>/api/1.0/layer"></script>
+            <?php endif;
+    
             extract( shortcode_atts( array(
                 'id' => false,
             ), $atts ) );
@@ -70,30 +184,17 @@ if ( ! class_exists( 'Promosimple' ) ) {
                 ob_start(); ?>
 
                 <div align="center">
-                    <a href="https://promosimple.com/ps/<?php echo $id; ?>" data-campaign="<?php echo $id; ?>" class="promosimple">
+                    <a href="<?php echo $this->promoSimpleDomain ?>/ps/<?php echo $id; ?>" data-campaign="<?php echo $id; ?>" class="promosimple">
                         <?php _e( 'Click here to view this promotion.', 'promosimple' ); ?>
                     </a>
-                    <script type="text/javascript" src="https://promosimple.com/api/1.0/campaign/<?php echo $id; ?>/iframe-loader"></script>
+                    <script type="text/javascript" src="<?php echo $this->promoSimpleDomain ?>/api/1.0/campaign/<?php echo $id; ?>/iframe-loader"></script>
                     <noscript>
                         <?php printf( __( 'You need to enable javascript to enter this campaign! %1$s Powered by %2$s.', 'promosimple' ), '<br />', '<a href="http://www.promosimple.com/">PromoSimple</a>' ); ?>
                     </noscript>
                 </div>
-
-                <?php
-                //Get account key from the campaign id
-                $xml = @file_get_contents('http://www.promosimple.com/public/account-key/campaign_id/' . $id);
-                //If an XML was obtained...
-                if ($xml) {
-                    //Get the account key, and if there is one, show the PromoBar
-                    $sxe = new SimpleXMLElement($xml);
-                    if ($sxe->accountKey): ?>
-                        <div id="promolayer-<?php echo $sxe->accountKey; ?>" class="promolayer"></div>
-                        <script type="text/javascript" src="https://promosimple.com/api/1.0/layer"></script>
-                    <?php endif; ?>
-                <?php }
                 
-                 $output = ob_get_clean();
-
+                <?php 
+                $output = ob_get_clean();
             } else {
 
                 $output = '<div align="center">' . __( 'Please enter a PromoSimple ID within your shortcode (e.g. [promosimple id="yourid"])', 'promosimple' ) . '</div>';

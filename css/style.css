@@ -21,3 +21,20 @@
 .promosimple-save{
     margin-left: 15px !important;
 }
+
+.settings-box {
+    background-color: #f9f9f9;
+    padding: 10px;
+    width: 400px;
+    margin-top: 15px;
+}
+
+.settings-title {
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.settings-options .long-input {
+    width: 240px;
+}
