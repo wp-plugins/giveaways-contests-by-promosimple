@@ -56,6 +56,8 @@ if ( ! class_exists( 'Promosimple' ) ) {
             add_action('admin_menu', array($this, 'add_page'));
             //Attach an activation hook and create options with default values
             register_activation_hook(__FILE__, array($this, 'activate'));
+            
+            add_action( 'init', array( $this, 'showPromoBar' ));
         }
         
         /*
@@ -165,14 +167,6 @@ if ( ! class_exists( 'Promosimple' ) ) {
          * @since: 1.0
          */
         public function shortcode( $atts ) {
-            //Show PromoBar, if available
-            $promosimple= get_option('promosimple'); 
-            $promoBarId = $promosimple['promo_bar_id'];
-            if (!empty($promoBarId)): ?> 
-                <div id="promolayer-<?php echo $promoBarId ?>" class="promolayer"></div>
-                <script type="text/javascript" src="<?php echo $this->promoSimpleDomain ?>/api/1.0/layer"></script>
-            <?php endif;
-    
             extract( shortcode_atts( array(
                 'id' => false,
             ), $atts ) );
@@ -202,7 +196,22 @@ if ( ! class_exists( 'Promosimple' ) ) {
             }
 
             return $output;
-
+        }
+        
+        /*
+         * Show the PromoBar, if available
+         */
+        public function showPromoBar() {
+            //If not admin only
+            if(!is_admin()) { 
+                //Show PromoBar, if available
+                $promosimple= get_option('promosimple');
+                $promoBarId = $promosimple['promo_bar_id'];
+                if (!empty($promoBarId)): ?> 
+                    <div id="promolayer-<?php echo $promoBarId ?>" class="promolayer"></div>
+                    <script type="text/javascript" src="<?php echo $this->promoSimpleDomain ?>/api/1.0/layer"></script>
+                <?php endif;
+            }          
         }
 
         /**
