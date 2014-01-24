@@ -6,11 +6,11 @@ Plugin URI: http://blog.promosimple.com/features-tools/wordpress-plugin-for-give
 Description: A simple plugin that allows the insertion of PromoSimple embed code via PromoSimple promo IDs used in a shortcode. Version 1.2 also adds
 an option in the settings menu that allows the insertion of a PromoBar.
 Version: 1.23
-Author: Sam Brodie / Blas Asenjo
+Author: PromoSimple
 Author URI: http://promosimple.com
 License: GPL2
 
-Copyright 2013  Sam Brodie  (email : sambrodie01@gmail.com)
+Copyright 2013 PromoSimple  (email : support@promosimple.com)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License, version 2, as
