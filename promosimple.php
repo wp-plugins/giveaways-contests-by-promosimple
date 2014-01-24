@@ -43,7 +43,7 @@ if ( ! class_exists( 'Promosimple' ) ) {
         }
 
         /**
-         * @author: Sam Brodie
+         * @author: PromoSimple
          * @since: 1.0
          */
         public function __construct() {
