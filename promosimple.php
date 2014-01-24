@@ -5,7 +5,7 @@ Plugin Name: PromoSimple
 Plugin URI: http://blog.promosimple.com/features-tools/wordpress-plugin-for-giveaways/
 Description: A simple plugin that allows the insertion of PromoSimple embed code via PromoSimple promo IDs used in a shortcode. Version 1.2 also adds
 an option in the settings menu that allows the insertion of a PromoBar.
-Version: 1.2
+Version: 1.23
 Author: Sam Brodie / Blas Asenjo
 Author URI: http://promosimple.com
 License: GPL2
