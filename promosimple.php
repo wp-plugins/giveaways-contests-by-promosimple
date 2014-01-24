@@ -62,6 +62,9 @@ if ( ! class_exists( 'Promosimple' ) ) {
         
         /*
          * Whitelist our options using the Settings API
+         * 
+         * @author: Blas Asenjo
+         * @since: 1.20
          */
         public function admin_init() {
             register_setting('promosimple_options', $this->option_name, array($this, 'validate'));
@@ -71,6 +74,8 @@ if ( ! class_exists( 'Promosimple' ) ) {
          * Validate inputs
          * 
          * @param array $input The options to validate
+         * @author: Blas Asenjo
+         * @since: 1.20
          * 
          * @return array with validation results for each option
          */
@@ -111,6 +116,9 @@ if ( ! class_exists( 'Promosimple' ) ) {
 
         /*
          * Activate event for the activation hook.
+         * 
+         * @author: Blas Asenjo
+         * @since: 1.20
          */
         public function activate() {
             update_option($this->option_name, $this->data);
@@ -118,6 +126,9 @@ if ( ! class_exists( 'Promosimple' ) ) {
 
         /*
          * Removes the options when the plugin is deactivated
+         * 
+         * @author: Blas Asenjo
+         * @since: 1.20
          */
         public function deactivate() {
             delete_option($this->option_name);
@@ -125,6 +136,9 @@ if ( ! class_exists( 'Promosimple' ) ) {
 
         /*
          * Add page action. Adds the options page to the settings menu.
+         * 
+         * @author: Blas Asenjo
+         * @since: 1.20
          */
         public function add_page() {
             add_options_page('PromoSimple', 'PromoSimple', 'manage_options', 'promosimple_options', array($this, 'options_do_page'));
@@ -132,6 +146,9 @@ if ( ! class_exists( 'Promosimple' ) ) {
 
         /*
          * Print the options page
+         * 
+         * @author: Blas Asenjo
+         * @since: 1.20
          */
         public function options_do_page() {
             $options = get_option($this->option_name);
@@ -200,6 +217,9 @@ if ( ! class_exists( 'Promosimple' ) ) {
         
         /*
          * Show the PromoBar, if available
+
+         * @author: Blas Asenjo
+         * @since: 1.23
          */
         public function showPromoBar() {
             //If not admin only
